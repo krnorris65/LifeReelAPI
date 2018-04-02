@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LifeReelAPI.Models
 {
@@ -15,8 +16,10 @@ namespace LifeReelAPI.Models
         public User Receiver {get; set;}
 
         public bool Pending {get; set;} = true;
-        
+
         [Required]
+        [DataType(DataType.Date)]
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime Date {get; set;}
     }
 }
