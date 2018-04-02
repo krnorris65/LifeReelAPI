@@ -17,6 +17,7 @@ namespace LifeReelAPI.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
             //automatically sets the date when a user or friend is created
             modelBuilder.Entity<User>()
                 .Property(b => b.DateCreated)

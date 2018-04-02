@@ -11,6 +11,8 @@ using Microsoft.Extensions.Options;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using LifeReelAPI.Data;
+using LifeReelAPI.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace LifeReelAPI
 {
@@ -29,6 +31,12 @@ namespace LifeReelAPI
             // Set up DB context to use SQLite
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+
+            // Set up identity server so services like SignInManager can be injected into controllers
+            services.AddIdentity<User, IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
+
 
             services.AddMvc();
         }
