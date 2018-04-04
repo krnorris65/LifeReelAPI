@@ -21,12 +21,12 @@ namespace LifeReelAPI.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            List<User> users = _context.User.ToList();
-            if (users == null)
+            List<User> _users = _context.User.ToList();
+            if (_users == null)
             {
                 return NotFound();
             }
-            return Ok(users);
+            return Ok(_users);
         }
 
         // GET api/user/5
@@ -41,14 +41,14 @@ namespace LifeReelAPI.Controllers
 
             try
             {
-                User user = _context.User.Single(p => p.Id == id);
+                User _user = _context.User.Single(p => p.Id == id);
 
-                if (user == null)
+                if (_user == null)
                 {
                     return NotFound();
                 }
 
-                return Ok(user);
+                return Ok(_user);
             }
             catch (System.InvalidOperationException ex)
             {
