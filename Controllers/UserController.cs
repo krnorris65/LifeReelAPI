@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using LifeReelAPI.Data;
@@ -32,7 +33,7 @@ namespace LifeReelAPI.Controllers
         // GET api/user/5
         //gets single user NOT SURE ABOUT ID BEING A STRING
         [HttpGet("{id}")]
-        public IActionResult Get(string id)
+        public IActionResult Get(int id)
         {
             if (!ModelState.IsValid)
             {
@@ -41,7 +42,8 @@ namespace LifeReelAPI.Controllers
 
             try
             {
-                User _user = _context.User.Single(p => p.Id == id);
+                //id is stored as a string so it needs to be parsed
+                User _user = _context.User.Single(p => Int32.Parse(p.Id) == id);
 
                 if (_user == null)
                 {
