@@ -97,16 +97,68 @@ namespace LifeReelAPI.Controllers
             return CreatedAtRoute("GetSingleEvent", new { id = _event.Id }, _event);
         }
 
-        // PUT api/event/5
+        /* PUT update the information on an event that already exists
+        api/event/5
+        Arguments: Event {
+            "User": required User,
+            "Title": required string,
+            "Rating": required int,
+            "Date": required string (formatted: YYYY-MM-DD),
+            "Description": string
+            "Private": bool
+        } */
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+        public IActionResult Put(int id, [FromBody]Event _event)
         {
+            //checks to see if input is valid
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (id != _event.Id)
+            {
+                return BadRequest();
+            }
+
+            //try to update the specfic event
+            _context.Event.Update(_event);
+            try
+            {
+                _context.SaveChanges();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                //if id does not exist return BadRequest
+                if (!EventExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            //return the event that was just updated
+            return CreatedAtRoute("GetSingleEvent", id, _event);
         }
 
         // DELETE api/event/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public IActionResult Delete(int id)
         {
+            Event _event = _context.Event.Single(p => p.Id == id);
+
+            if (_event == null)
+            {
+                return NotFound();
+            }
+            
+            _context.Event.Remove(_event);
+            _context.SaveChanges();
+            return Ok(_event);
+
         }
             
         //checks to see if the Event exists
